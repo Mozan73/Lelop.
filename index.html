@@ -64,6 +64,25 @@
         .search-input::placeholder {
             color: #aaa;
         }
+        .microphone {
+            background: #34a853;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-left: 10px;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+        .microphone:hover {
+            background: #2c8a43;
+        }
         .search-button {
             background-color: #4285f4;
             border: none;
@@ -116,6 +135,7 @@
         </div>
         <form class="search-box" onsubmit="performSearch(event)">
             <input type="text" class="search-input" placeholder="Search in Lelop or use URL" oninput="showSuggestions()" required>
+            <div class="microphone" onclick="startListening()">🎤</div>
             <div class="suggestions"></div>
             <button type="submit" class="search-button">Search</button>
         </form>
@@ -167,6 +187,25 @@
             } else {
                 alert('Please enter a search query or URL.');
             }
+        }
+
+        // Voice recognition
+        function startListening() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'ar'; // Arabic language
+            recognition.onstart = () => {
+                searchInput.placeholder = 'Listening...';
+            };
+            recognition.onspeechend = () => {
+                searchInput.placeholder = 'Search in Lelop or use URL';
+                recognition.stop();
+            };
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                searchInput.value = transcript;
+                showSuggestions();
+            };
+            recognition.start();
         }
 
         // Close suggestions on clicking outside
