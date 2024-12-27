@@ -47,41 +47,26 @@
         }
         .search-box {
             display: flex;
-            flex-direction: column;
-            align-items: stretch;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            padding: 10px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             position: relative;
         }
         .search-input {
             flex-grow: 1;
-            border: 1px solid #ddd;
+            border: none;
             outline: none;
-            padding: 10px 20px;
+            padding: 10px;
             font-size: 1rem;
             color: #333;
             border-radius: 50px;
-            background: #fff;
+            background-color: transparent;
         }
         .search-input::placeholder {
             color: #aaa;
-        }
-        .microphone {
-            background: #34a853;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            margin-left: 10px;
-            position: absolute;
-            right: 10px;
-            top: 10px;
-        }
-        .microphone:hover {
-            background: #2c8a43;
         }
         .search-button {
             background-color: #4285f4;
@@ -92,10 +77,17 @@
             font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.3s;
-            margin-top: 10px;
         }
         .search-button:hover {
             background-color: #3367d6;
+        }
+        .microphone-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            color: #4285f4;
         }
         .suggestions {
             position: absolute;
@@ -135,7 +127,9 @@
         </div>
         <form class="search-box" onsubmit="performSearch(event)">
             <input type="text" class="search-input" placeholder="Search in Lelop or use URL" oninput="showSuggestions()" required>
-            <div class="microphone" onclick="startListening()">🎤</div>
+            <svg class="microphone-icon" onclick="startListening()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3zm6-3a6 6 0 0 1-12 0H4a8 8 0 0 0 16 0h-2zm-6 6v4h-2v-4h2z" />
+            </svg>
             <div class="suggestions"></div>
             <button type="submit" class="search-button">Search</button>
         </form>
@@ -189,7 +183,6 @@
             }
         }
 
-        // Voice recognition
         function startListening() {
             const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             recognition.lang = 'ar'; // Arabic language
